@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cookie Demo</title>
+    <style>
+        body { font-family: Arial; max-width: 500px; margin: 20px auto; }
+        input { margin: 5px; }
+        #cookiesList { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Cookie Demo</h1>
+    <form id="cookieForm">
+        <input type="text" id="cookieName" placeholder="Cookie Name" required>
+        <input type="text" id="cookieValue" placeholder="Cookie Value" required>
+        <button type="submit">Set Cookie</button>
+    </form>
+    <div id="cookiesList"></div>
+
+    <script>
+        function setCookie(name, value) {
+            const date = new Date();
+            date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Lax";
+        }
+
+        function displayCookies() {
+            const cookies = document.cookie.split(';');
+            const cookiesList = document.getElementById('cookiesList');
+            cookiesList.innerHTML = cookies[0] ? 
+                cookies.map(c => c.trim()).join('<br>') : 'No cookies set';
+            console.log('Current cookies:', document.cookie);
+        }
+
+        document.getElementById('cookieForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('cookieName').value;
+            const value = document.getElementById('cookieValue').value;
+            setCookie(name, value);
+            displayCookies();
+            this.reset();
+        });
+
+        displayCookies();
+    </script>
+</body>
+</html> 
